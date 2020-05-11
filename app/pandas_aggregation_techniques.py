@@ -43,6 +43,8 @@ def filter_data_where_column_eq_value(data_frame: pandas.DataFrame, column_name:
         A tabular representation of the data filtered.
 
     """
+    log.debug('column_name: %s', column_name)
+    log.debug('filter_value: %s', filter_value)
     return data_frame.loc[data_frame[column_name] == filter_value]
 
 
@@ -64,6 +66,8 @@ def filter_data_where_column_neq_value(data_frame: pandas.DataFrame, column_name
         A tabular representation of the data filtered.
 
     """
+    log.debug('column_name: %s', column_name)
+    log.debug('filter_value: %s', filter_value)
     return data_frame.loc[data_frame[column_name] != filter_value]
 
 
@@ -85,6 +89,8 @@ def filter_data_where_column_isin_array(data_frame: pandas.DataFrame, column_nam
         A tabular representation of the data filtered.
 
     """
+    log.debug('column_name: %s', column_name)
+    log.debug('filter_array: %s', filter_array)
     return data_frame.loc[data_frame[column_name].isin(filter_array)]
 
 
@@ -106,6 +112,8 @@ def filter_data_where_column_is_not_in_array(data_frame: pandas.DataFrame, colum
         A tabular representation of the data filtered.
 
     """
+    log.debug('column_name: %s', column_name)
+    log.debug('filter_array: %s', filter_array)
     return data_frame.loc[~data_frame[column_name].isin(filter_array)]
 
 
@@ -124,4 +132,5 @@ def filter_data_by_columns(data_frame: pandas.DataFrame, columns: List) -> panda
         A tabular representation of the data filtered.
 
     """
+    log.debug('columns: %s', columns)
     return data_frame[columns]
