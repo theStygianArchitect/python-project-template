@@ -1,0 +1,121 @@
+stages:
+  - code_sec_scan
+  - linting
+  - tests
+
+bandit_sec_scan:
+  image: clearlinux/python:3.7
+  stage: code_sec_scan
+  tags:
+    - gitlab-org
+  before_script:
+#    - pip install pip --upgrade
+#    - pip install pipenv --upgrade
+#    - pipenv install --dev --deploy --system
+#    - pipenv install --deploy --system
+    - swupd bundle-add curl
+    - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+    - $HOME.poetry/bin/poetry self update
+    - $HOME.poetry/bin/poetry config virtualenvs.create false
+    - $HOME.poetry/bin/poetry install
+#    - python env_generation.py --branch $CI_COMMIT_REF_NAME
+  script:
+    - for i in $(ls app/*.py); do bandit $i; done
+    - for i in $(ls tests/*.py); do bandit $i; done
+
+safety_sec_scan:
+  image: clearlinux/python:3.7
+  stage: code_sec_scan
+  tags:
+    - gitlab-org
+  before_script:
+#    - pip install pip --upgrade
+#    - pip install pipenv --upgrade
+#    - pipenv install --dev --deploy --system
+#    - pipenv install --deploy --system
+    - swupd bundle-add curl
+    - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+    - $HOME.poetry/bin/poetry self update
+    - $HOME.poetry/bin/poetry config virtualenvs.create false
+    - $HOME.poetry/bin/poetry install
+#    - python env_generation.py --branch $CI_COMMIT_REF_NAME
+  script:
+    - safety check
+
+code_linting:
+  image: clearlinux/python:3.7
+  stage: linting
+  tags:
+    - gitlab-org
+  before_script:
+#    - pip install pip --upgrade
+#    - pip install pipenv --upgrade
+#    - pipenv install --dev --deploy --system
+#    - pipenv install --deploy --system
+    - swupd bundle-add curl
+    - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+    - $HOME.poetry/bin/poetry self update
+    - $HOME.poetry/bin/poetry config virtualenvs.create false
+    - $HOME.poetry/bin/poetry install
+#    - python env_generation.py --branch $CI_COMMIT_REF_NAME
+  script:
+    - for i in $(ls app/*.py); do pylint $i; done
+    - for i in $(ls app/*.py); do pycodestyle --max-line-length 100 $i; done
+
+doc_linting:
+  image: clearlinux/python:3.7
+  stage: linting
+  tags:
+    - gitlab-org
+  before_script:
+#    - pip install pip --upgrade
+#    - pip install pipenv --upgrade
+#    - pipenv install --dev --deploy --system
+#    - pipenv install --deploy --system
+    - swupd bundle-add curl
+    - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+    - $HOME.poetry/bin/poetry self update
+    - $HOME.poetry/bin/poetry config virtualenvs.create false
+    - $HOME.poetry/bin/poetry install
+#    - python env_generation.py --branch $CI_COMMIT_REF_NAME
+  script:
+    - for i in $(ls app/*.py); do pydocstyle $i; done
+
+code_type_linting:
+  image: clearlinux/python:3.7
+  stage: linting
+  tags:
+    - gitlab-org
+  before_script:
+#    - pip install pip --upgrade
+#    - pip install pipenv --upgrade
+#    - pipenv install --dev --deploy --system
+#    - pipenv install --deploy --system
+    - swupd bundle-add curl
+    - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+    - $HOME.poetry/bin/poetry self update
+    - $HOME.poetry/bin/poetry config virtualenvs.create false
+    - $HOME.poetry/bin/poetry install
+#    - python env_generation.py --branch $CI_COMMIT_REF_NAME
+  script:
+    - for i in $(ls app/*.py); do mypy $i --ignore-missing-imports; done
+
+unit_and_integration_tests:
+  image: clearlinux/python:3.7
+  stage: tests
+  tags:
+    - gitlab-org
+  before_script:
+#    - pip install pip --upgrade
+#    - pip install pipenv --upgrade
+#    - pipenv install --dev --deploy --system
+#    - pipenv install --deploy --system
+    - swupd bundle-add curl
+    - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+    - $HOME.poetry/bin/poetry self update
+    - $HOME.poetry/bin/poetry config virtualenvs.create false
+    - $HOME.poetry/bin/poetry install
+#    - python env_generation.py --branch $CI_COMMIT_REF_NAME
+  script:
+    #    - $HOME.poetry/bin/poetry run python -m pytest tests/
+    - python -m pytest tests/
