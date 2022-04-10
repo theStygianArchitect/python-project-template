@@ -22,10 +22,7 @@ except ModuleNotFoundError as module_not_found_error:
     print('Please install required packages')
     sys.exit(1)
 
-try:
-    from logger import set_up_stream_logging
-except ModuleNotFoundError:
-    from app.logger import set_up_stream_logging  # type: ignore
+from app.logger import set_up_stream_logging  # type: ignore
 
 app = FastAPI()  # pylint: disable=C0103,E1101
 app.add_middleware(CORSMiddleware,
