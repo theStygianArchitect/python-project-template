@@ -8,9 +8,10 @@ Author: theStygianArchitect
 """
 import argparse
 import os
+from typing import Text
 
 
-def write_env_file(branch):
+def write_env_file(branch: Text):
     """Create a .env file in the working directory location.
 
     This function creates a .env file in the working directory
@@ -20,7 +21,7 @@ def write_env_file(branch):
         branch(str): The name of the git branch this is on.
 
     Returns:
-        Nothing.
+        None.
 
     """
     with open('.env', 'w') as env_file_obj:
@@ -31,6 +32,26 @@ def write_env_file(branch):
                 key_ = key_.replace("%s_" % branch, '')
                 env_file_obj.write("%s=%s" % (key_, value))
                 env_file_obj.write('\n')
+
+
+def read_env_file(env_file: Text = None):
+    """Read a .env file in the working directory location.
+
+    This function reads a .env file in the working directory
+    location.
+
+    """
+    if not env_file:
+        env_file = '.env'
+    with open(env_file) as env_file_obj:
+        for line in env_file_obj:
+            line = line.rstrip().lstrip()
+            if not line or line.startswith('#'):
+                continue
+            key_ = f"{line.split('=', 1)[0]}"
+            value_ = f"{line.split('=', 1)[1]}"
+            if key_ not in os.environ:
+                os.environ[key_] = value_
 
 
 def main():
