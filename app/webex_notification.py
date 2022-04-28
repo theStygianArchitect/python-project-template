@@ -7,7 +7,7 @@ bot accounts may need to occur.
 
 Title: webex_notification.py
 
-Author: Shayne Cardwell
+Author: theStygianArchitect
 """
 import os
 from pathlib import Path
