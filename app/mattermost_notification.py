@@ -4,7 +4,7 @@ Description: This module contains MatterMost notification techniques.
 
 Title: mattermost_notification.py
 
-Author: Vijay Babaria
+Author: ObsidianX
 """
 
 import os
